@@ -1,0 +1,76 @@
+# Playwright Overview
+- Developed by Microsoft in 2020.
+- Automation testing tool.
+- Supports various devices, OS, and browsers (Chromium, Firefox, WebKit).
+
+# Key Features
+- Auto-wait: Automatically waits for elements to be ready before performing actions. default(30sec)
+- Native Browser Support: Does not require extra code for different browsers.
+- Built-in Runner: Includes an integrated test runner.
+- Built-in Reporter: Provides native reporting functionality.
+- Tracing and Debugging: Advanced tools for troubleshooting tests.
+- Built-in Assertions: Integrated validation and verification support.
+
+
+#How to install it?
+- npm init playwright@latest
+
+
+#Workers VS test
+- when we try to implement any test it only uses 50% of your cpu cores like if you have 8 core it uses 4 workers only 
+command to execute testcase is npx playwright test 
+
+
+#Fixtures
+-it is a reusabe code to setup the connection to the browser/pages
+-Types of Fixtures
+    -pages
+    -browser
+    -browserName
+    -context
+    -request ---->api
+
+#Fixture Scopes
+    -page -->test Scopes
+    -browser -->worker scope    
+    -context -->test scope
+
+
+#Anotations
+-we are adding some extra information to our testcase
+-Types
+    -skip  (inteltionally skip)
+    -only  (when only want to run specific testcase)
+    -fixme  (when there is a bug or in process)
+    -fail
+    -describe  (can create multiple testcase inside)
+    -slow     (it will take more time to execute liek 90sec)
+    -setTimeout
+
+
+#To Run testcases
+    -npx playwright test
+    -npx playwright test relative_path   (test specific file only)
+    -npx playwright test -g "title"       (test specific testcase only)
+    -npx playwright test --project=Chromium (test specific browser only)
+    -npx playwright test --project=Chromium -g "title" (test specific browser and testcase only)
+    -npx playwright test --project=Chromium -g "title" --headed --debug (test specific browser and testcase only in headed and debug)
+
+#To See the logs and status 
+    -npx playwright show-report
+    -npx playwright show-report --port 9999 (when high load we can change port)
+
+#To change the mode from headed to headless
+    - await page.pause() 
+    -defaut viewport size of playwright is { width: 1280, height: 720 } but we can change
+
+#Some Other functions
+    -page.pause()
+    -page.setViewport()
+    -page.viewport()
+    -page.close()
+    -page.screenshot({path:"path"})
+    -page.title()
+    -page.url()
+    -page.goBack()
+    

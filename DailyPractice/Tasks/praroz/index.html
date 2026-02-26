@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PraRoz - Web Design & Development Course</title>
+  </head>
+  <link rel="stylesheet" href="style.css" />
+  <body>
+    <!-- Header / Navbar -->
+    <header class="header">
+      <div class="logo">PraRoz</div>
+
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li>
+            <a href="#service">
+              <select
+                style="
+                  background-color: transparent;
+                  border: none;
+                  color: white;
+                "
+              >
+                <option value="1">Webdev</option>
+                <option value="2">MCP</option>
+                <option value="3">Devops</option>
+              </select>
+            </a>
+          </li>
+          <li><a href="#design">Design</a></li>
+          <li><a href="./contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="search-box">
+        <input type="text" placeholder="Type to Search" />
+        <button type="button">Search</button>
+      </div>
+    </header>
+
+    <!-- Main Section -->
+    <main class="main-section" id="home">
+      <!-- Left content: text -->
+      <section class="hero-text">
+        <h1 id="h1">Web Design &amp;<br />Development<br />Course</h1>
+        <p>
+          Web Design is a specialisation of the design stream. They also use
+          HTML, CSS, WYSIWYG editing software, mark up validators etc. to create
+          design elements.
+        </p>
+        <button type="button" class="btn-join">Join Us</button>
+      </section>
+
+      <!-- Right content: login card -->
+      <aside class="login-card">
+        <h2>Login Here</h2>
+
+        <form>
+          <input type="email" placeholder="Enter Email Here" required />
+          <input type="password" placeholder="Enter Password Here" required />
+          <button type="submit" class="btn-login">Login</button>
+        </form>
+
+        <p class="signup-text">
+          Don't have an account?<br />
+          <a href="#signup">Sign up here</a>
+        </p>
+
+        <p class="social-text">Log in with</p>
+        <div class="social-icons">
+          <a href="#facebook">Facebook</a>
+          <a href="#instagram">Instagram</a>
+          <a href="#twitter">Twitter</a>
+          <a href="#google">Google</a>
+        </div>
+      </aside>
+    </main>
+    <script src="script.js"></script>
+    <script src="script2.js"></script>
+  </body>
+</html>

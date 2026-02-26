@@ -1,0 +1,5 @@
+these is no method overloading 
+//no major polymorphism
+JIT--invented in 1960 but incorporate with js in 
+
+//by default the properties are public 

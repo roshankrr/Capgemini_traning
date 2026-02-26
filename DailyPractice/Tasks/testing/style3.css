@@ -1,0 +1,146 @@
+.parent{
+    height: 10rem;
+    width: 10rem;
+    background-color: red;
+    position: relative;
+}
+.child{
+    height: 5rem;
+    width: 5rem;
+    background-color: blue;
+    position: absolute;
+    top: 2.5rem;
+    left: 2.5rem;
+}
+
+body{
+    height: 100%;
+    width: 100%;
+    
+}
+.box{
+    background-color: aquamarine;
+    position: relative;
+    padding: 2rem;
+    margin:10rem
+}
+
+.fixed{
+    height: 4rem;
+    width: 100%;
+    background-color: skyblue;
+    text-align: center;
+    align-content: center;
+
+}
+h1{
+    text-align: center;
+}
+.relative{
+    height: 4rem;
+    width: 100%;
+    background-color: rgb(71, 104, 71);
+    margin-bottom: 10rem;
+    align-content: center;
+    text-align: center;
+    position: relative;
+}
+.absolute{
+    height: 5rem;
+    width: 8rem;
+    background-color: rgb(110, 207, 194);
+    position: absolute;
+    right: 20px;
+    top: -8px;
+    align-content: center;
+    text-align: center;
+    
+}
+.static{
+    height: 4rem;
+    width: 100%;
+    background-color: rgb(223, 189, 125);
+    align-content: center;
+    text-align: center;
+}
+
+.main{
+    height: 100vh;
+    background-color: bisque;
+    display: grid;
+    grid-template-rows: repeat(6,1fr);
+    grid-template-columns: repeat(12,1fr);
+}
+
+
+.cont{
+    background-color: blue;
+    margin: 10px;
+}
+.c1{
+    grid-column-start: 1;
+    grid-column-end:13;
+}
+.c2{
+    grid-column-start:1;
+    grid-column-end:7;
+}
+.c3{
+    grid-column-start:7;
+    grid-column-end:13;
+}
+.c4{
+    grid-column-start:1;
+    grid-column-end:5;
+}
+.c5{
+    grid-column-start:5;
+    grid-column-end:9;
+}
+.c6{
+    grid-column-start:9;
+    grid-column-end:13;
+}
+.c7{
+    grid-column-start:1;
+    grid-column-end:4;
+}
+.c8{
+    grid-column-start:4;
+    grid-column-end:7;
+}
+.c9{
+    grid-column-start:7;
+    grid-column-end:10;
+}
+.c10{
+    grid-column-start:10;
+    grid-column-end:13;
+}
+.c11{
+    grid-column-start:1;
+    grid-column-end:3;
+}
+.c12{
+    grid-column-start:3;
+    grid-column-end:5;
+}
+.c13{
+    grid-column-start:5;
+    grid-column-end:7;
+}
+.c14{
+    grid-column-start:7;
+    grid-column-end:9;
+}
+.c15{
+    grid-column-start:9;
+    grid-column-end:11;
+}
+.c16{
+    grid-column-start:11;
+    grid-column-end:13;
+}
+
+    
+

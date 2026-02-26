@@ -1,0 +1,19 @@
+html is nothing but a hyper text markup language also known as root frontend language a reference or link to visuallise the content to the user interface bu using some predefined tagas which browser understands
+
+
+- ol: Ordered list, used for numbered or lettered sequences.
+- ul: Unordered list, used for bulleted items.
+- thead: Groups the header content in an HTML table.
+- tbody: Groups the main body content in an HTML table.
+- tr: Defines a single row within a table.
+- td: Defines a standard data cell within a table row.
+- colspan: Attribute used on <td> or <th> to span a cell across multiple columns.
+- rowspan: Attribute used on <td> or <th> to span a cell across multiple rows.
+
+payload medusa vendor next plane 
+
+
+
+
+js
+function expression is the type of declaration where we are assigning the function to a var
