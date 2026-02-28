@@ -4,7 +4,21 @@
         - /html/body/div[1]/section/div/form/button
     -relative_path  (//)
     -examples:
-        - //button[text()='Login']    (we can also use .)
-        - //input[@id='username']       (@ is used for attributes only)
-        - //div[@class='container']//p
-        - //*[@name='email' and @type='text']
+        - //button[text()='Login']                      (exact text match)
+        - //input[@id='username']                       (@ is used for attributes)
+        - //div[@class='container']//p                  (descendant selector)
+        - //*[@name='email' and @type='text']           (multiple attributes)
+        - //a[contains(@href, 'login')]                 (partial attribute match)
+        - //h1[starts-with(text(), 'Welcome')]          (starts-with function)
+        - //label[contains(., 'Password')]              (. is shorthand for text content)
+        - //input[not(@disabled)]                       (negation)
+        - //div[@id='root']//following-sibling::footer  (axes: following-sibling)
+        - //span[text()='Error']/..                      (parent selector)
+        - (//table//tr)[last()]                         (index/positioning)
+
+#Playwright Usage
+    - page.locator("//button[text()='Login']")          (Playwright auto-detects // as xpath)
+    - page.locator("xpath=//*[@id='submit']")           (explicit xpath prefix)
+    - await page.click("//a[contains(., 'Sign Out')]")
+    - const rows = page.locator("//table[@id='results']//tr")
+    - await page.locator("//input").fill("value")

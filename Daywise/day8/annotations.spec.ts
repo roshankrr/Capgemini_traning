@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { test } from "../../playwrite/node_modules/@playwright/test";
 
 test("title1", async () => {
   console.log("title1");

@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { test } from "../../playwrite/node_modules/@playwright/test";
 
 test("practice", async ({ page }) => {
   await page.goto("https://practicetestautomation.com/practice-test-login/");
