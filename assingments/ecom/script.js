@@ -1,5 +1,6 @@
 let cartItems = document.getElementById("cart-items");
 let cards = document.querySelectorAll(".card");
+let empty = document.querySelector(".empty");
 
 cards.forEach((card) => {
   card.addEventListener("click", () => {
@@ -12,10 +13,18 @@ cards.forEach((card) => {
 });
 
 let items = localStorage;
-console.log(items);
+console.log(items.cart);
+if (localStorage.length != 0) {
+  let data = JSON.parse(items.cart);
+  data.forEach((e) => {
+    let div = document.createElement("div");
+    div.style.padding = "5px";
+    div.style.backgroundColor = "gray";
+    div.style.margin = "5px";
+    div.style.borderRadius = "5px";
+    div.style.display = "inline-block";
 
-// items.forEach((e) => {
-//   let it = document.createElement("div");
-//   it.innerHTML = e;
-//   cartItems.appendChild(it);
-// });
+    div.innerHTML = e.product;
+    cartItems.appendChild(div);
+  });
+}

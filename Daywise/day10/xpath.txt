@@ -1,0 +1,10 @@
+#Xpath
+    -absolute_path  (/)
+    -examples:
+        - /html/body/div[1]/section/div/form/button
+    -relative_path  (//)
+    -examples:
+        - //button[text()='Login']    (we can also use .)
+        - //input[@id='username']       (@ is used for attributes only)
+        - //div[@class='container']//p
+        - //*[@name='email' and @type='text']
