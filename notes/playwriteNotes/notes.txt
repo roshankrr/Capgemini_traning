@@ -86,5 +86,17 @@ command to execute testcase is npx playwright test
         - //input[@id='username']       (@ is used for attributes only)
         - //div[@class='container']//p
         - //*[@name='email' and @type='text']
+        -//button[contains(method/@attribute,"Partial_text")]    (it will find the partial contents)
+        -//button[starts-with(text(),"Partial_text")]    (it will find the partial contents)
+        -//button[ends-with(text(),"Partial_text")]    (it will find the partial contents)
+        -//div[@attributes]//div[attribut]               (target from parent to child)
+        -//div[@attribute]/descendant::p               (target from parent to child)
+        - //div[@id='child']/..                        (target parent)
+        - //div[@id='child']/parent::div               (target parent)
+        - //div[@id='child']/ancestor::div               (target ancestor)
+        - //div[@id='child']/following-sibling::p      (target next sibling)
+        - //div[@id='child']/preceding-sibling::p      (target previous sibling)
 
-
+    -Exceptions             (some paths cannot be access due to namespace and context issue so we use this)
+        -//*[local-name()='svg']
+        -//*[name()='svg']
