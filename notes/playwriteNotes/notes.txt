@@ -64,7 +64,7 @@ command to execute testcase is npx playwright test
     - await page.pause() 
     -defaut viewport size of playwright is { width: 1280, height: 720 } but we can change
 
-#Some Other functions
+#Web-Elem-Controls
     -page.pause()
     -page.setViewport()
     -page.viewport()
@@ -73,6 +73,12 @@ command to execute testcase is npx playwright test
     -page.title()
     -page.url()
     -page.goBack()
+    -page.fill()        (it will replace the existing text)
+    -page.type()        (it will add the text and we can see it one by one letter)
+    -page.isVisible()
+    -page.locator().all()   (return all contents selected )
+
+
     
 
 
@@ -100,3 +106,29 @@ command to execute testcase is npx playwright test
     -Exceptions             (some paths cannot be access due to namespace and context issue so we use this)
         -//*[local-name()='svg']
         -//*[name()='svg']
+
+
+
+
+
+#GetBy Locators
+- Recommended locators for accessibility.
+- Types:
+    - page.getByRole(role:""): Locate by ARIA role and name.       
+    - page.getByLabel(): Locate by label text.              (supports partial text)
+    - page.getByPlaceholder(): Locate by placeholder text.  (supports partial text)
+    - page.getByText(): Locate by visible text.             (supports partial text)
+    - page.getByAltText(): Locate by alt attribute.         (supports partial text)
+    - page.getByTitle(): Locate by title attribute.         (supports partial text)
+    - page.getByTestId(): Locate by data-testid attribute.
+
+
+#Assertions (validations)
+    -Types
+        -Auto-retrying (wait for 5 sec then timeout)
+        -Non-retrying
+
+
+    #Auto Retrying 
+    -await expect(locator).toBeChecked()
+    -await expect(locator).toBeVisible()
