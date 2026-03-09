@@ -1,134 +1,387 @@
-# Playwright Overview
+# ============================================================
+#                     PLAYWRIGHT NOTES
+# ============================================================
+
+
+# 1. OVERVIEW
+# ------------------------------------------------------------
 - Developed by Microsoft in 2020.
-- Automation testing tool.
-- Supports various devices, OS, and browsers (Chromium, Firefox, WebKit).
-
-# Key Features
-- Auto-wait: Automatically waits for elements to be ready before performing actions. default(30sec)
-- Native Browser Support: Does not require extra code for different browsers.
-- Built-in Runner: Includes an integrated test runner.
-- Built-in Reporter: Provides native reporting functionality.
-- Tracing and Debugging: Advanced tools for troubleshooting tests.
-- Built-in Assertions: Integrated validation and verification support.
+- Open-source end-to-end automation testing framework for web apps.
+- Supports languages: JavaScript, TypeScript, Python, Java, C#.
+- Cross-browser: Chromium (Chrome, Edge), Firefox, WebKit (Safari).
+- Cross-platform: Windows, macOS, Linux.
+- Can emulate mobile devices (viewport, user-agent, geolocation).
 
 
-#How to install it?
-- npm init playwright@latest
+# 2. KEY FEATURES
+# ------------------------------------------------------------
+- Auto-wait         : Waits for elements to be visible, stable, enabled, and ready before acting. Default timeout 30s.
+- Native Browser    : Uses browser-specific protocols directly — no extra drivers like Selenium WebDriver.
+- Built-in Runner   : @playwright/test — supports parallel execution, retries, and fixtures.
+- Built-in Reporter : HTML, JSON, JUnit, List, Dot reporters available out of the box.
+- Tracing/Debugging : Trace viewer captures screenshots, DOM snapshots, network logs, and console output.
+- Built-in Assertions: Auto-retrying assertions that wait for expected conditions.
+- Network Intercept : Can mock, modify, or block API requests and responses.
+- Multi-tab Support : Can handle multiple browser contexts and pages in a single test.
 
 
-#Workers VS test
-- when we try to implement any test it only uses 50% of your cpu cores like if you have 8 core it uses 4 workers only 
-command to execute testcase is npx playwright test 
+# 3. INSTALLATION & PROJECT STRUCTURE
+# ------------------------------------------------------------
+    npm init playwright@latest
+
+    This creates:
+    - playwright.config.ts       --> main configuration file
+    - tests/                     --> folder for test files (.spec.ts)
+    - tests-examples/            --> sample tests provided by Playwright
+    - test-results/              --> artifacts (screenshots, videos, traces)
+    - playwright-report/         --> HTML report output
+
+    Other useful commands:
+    - npx playwright install              --> install all browsers
+    - npx playwright install chromium     --> install a specific browser
 
 
-#Fixtures
--it is a reusabe code to setup the connection to the browser/pages
--Types of Fixtures
-    -pages
-    -browser
-    -browserName
-    -context
-    -request ---->api
-
-#Fixture Scopes
-    -page -->test Scopes
-    -browser -->worker scope    
-    -context -->test scope
+# 4. WORKERS & PARALLELISM
+# ------------------------------------------------------------
+- Tests run in parallel using workers (separate processes).
+- Default: uses 50% of CPU cores (8-core CPU = 4 workers).
+- Each worker gets its own isolated browser instance.
+- Configurable in playwright.config.ts via the "workers" property.
+- Set workers to 1 for serial execution (useful for debugging).
 
 
-#Anotations
--we are adding some extra information to our testcase
--Types
-    -skip  (inteltionally skip)
-    -only  (when only want to run specific testcase)
-    -fixme  (when there is a bug or in process)
-    -fail
-    -describe  (can create multiple testcase inside)
-    -slow     (it will take more time to execute liek 90sec)
-    -setTimeout
+# 5. FIXTURES
+# ------------------------------------------------------------
+- Reusable setup/teardown mechanisms that provide dependencies to tests.
+- Playwright injects them automatically as function parameters.
+
+    Built-in Fixtures:
+    - page          --> represents a single browser tab (most used)
+    - browser       --> shared browser instance across tests in a worker
+    - browserName   --> string: 'chromium', 'firefox', or 'webkit'
+    - context       --> isolated browser context (separate cookies, storage, sessions)
+    - request       --> API request context for making direct HTTP calls
+
+    Fixture Scopes:
+    - Test scope    --> created fresh for each test, destroyed after (page, context)
+    - Worker scope  --> shared across all tests in a worker, created once (browser)
+
+    Custom Fixtures:
+    - You can extend the base test object to create reusable fixtures (e.g., a logged-in page).
 
 
-#To Run testcases
-    -npx playwright test
-    -npx playwright test relative_path   (test specific file only)
-    -npx playwright test -g "title"       (test specific testcase only)
-    -npx playwright test --project=Chromium (test specific browser only)
-    -npx playwright test --project=Chromium -g "title" (test specific browser and testcase only)
-    -npx playwright test --project=Chromium -g "title" --headed --debug (test specific browser and testcase only in headed and debug)
+# 6. ANNOTATIONS
+# ------------------------------------------------------------
+- Control test execution behavior or add metadata.
 
-#To See the logs and status 
-    -npx playwright show-report
-    -npx playwright show-report --port 9999 (when high load we can change port)
+    - test.skip()        --> skips the test intentionally; can accept a condition and reason
+    - test.only()        --> runs only this test; all others are ignored
+    - test.fixme()       --> marks test as known bug or work-in-progress; skips it
+    - test.fail()        --> expects the test to fail; passes if it fails, fails if it passes
+    - test.slow()        --> triples the timeout (30s becomes 90s)
+    - test.setTimeout()  --> sets a custom timeout for that specific test
+    - test.describe()    --> groups multiple related tests into a suite/block
 
-#To change the mode from headed to headless
-    - await page.pause() 
-    -defaut viewport size of playwright is { width: 1280, height: 720 } but we can change
-
-#Web-Elem-Controls
-    -page.pause()
-    -page.setViewport()
-    -page.viewport()
-    -page.close()
-    -page.screenshot({path:"path"})
-    -page.title()
-    -page.url()
-    -page.goBack()
-    -page.fill()        (it will replace the existing text)
-    -page.type()        (it will add the text and we can see it one by one letter)
-    -page.isVisible()
-    -page.locator().all()   (return all contents selected )
+    Conditional Usage:
+    - test.skip() and test.fixme() can take a boolean condition as first argument
+      to skip only under certain conditions (e.g., skip on a specific browser).
 
 
-    
+# 7. RUNNING TESTS (CLI)
+# ------------------------------------------------------------
+    npx playwright test                                  --> run all tests
+    npx playwright test tests/login.spec.ts              --> run a specific file
+    npx playwright test -g "title"                       --> run tests matching a title
+    npx playwright test --project=chromium               --> run on a specific browser
+    npx playwright test --project=chromium -g "title"    --> combine browser + title filter
+    npx playwright test --headed                         --> run with visible browser UI
+    npx playwright test --debug                          --> run with Playwright Inspector (step-by-step)
+    npx playwright test --workers=1                      --> run tests serially
+    npx playwright test --trace on                       --> capture traces for every test
+    npx playwright test --update-snapshots               --> update visual/snapshot baselines
 
 
-#Xpath
-    -absolute_path  (/)
-    -examples:
-        - /html/body/div[1]/section/div/form/button
-    -relative_path  (//)
-    -examples:
-        - //button[text()='Login']    (we can also use .)
-        - //input[@id='username']       (@ is used for attributes only)
-        - //div[@class='container']//p
-        - //*[@name='email' and @type='text']
-        -//button[contains(method/@attribute,"Partial_text")]    (it will find the partial contents)
-        -//button[starts-with(text(),"Partial_text")]    (it will find the partial contents)
-        -//button[ends-with(text(),"Partial_text")]    (it will find the partial contents)
-        -//div[@attributes]//div[attribut]               (target from parent to child)
-        -//div[@attribute]/descendant::p               (target from parent to child)
-        - //div[@id='child']/..                        (target parent)
-        - //div[@id='child']/parent::div               (target parent)
-        - //div[@id='child']/ancestor::div               (target ancestor)
-        - //div[@id='child']/following-sibling::p      (target next sibling)
-        - //div[@id='child']/preceding-sibling::p      (target previous sibling)
+# 8. REPORTS & LOGS
+# ------------------------------------------------------------
+    npx playwright show-report                --> open HTML report (default port 9223)
+    npx playwright show-report --port 9999    --> open on a custom port
 
-    -Exceptions             (some paths cannot be access due to namespace and context issue so we use this)
-        -//*[local-name()='svg']
-        -//*[name()='svg']
+    Available Reporters: html, json, junit, list, dot, line
+    - Can configure single or multiple reporters in playwright.config.ts.
 
 
+# 9. HEADED VS HEADLESS MODE
+# ------------------------------------------------------------
+    - Headless (default) : browser runs in background, no UI — faster execution.
+    - Headed             : browser UI is visible — useful for debugging.
+    - Default viewport   : { width: 1280, height: 720 }, configurable in config or per-test.
+    - page.pause()       : pauses execution mid-test and opens the Playwright Inspector for manual debugging.
 
 
+# 10. PAGE ACTIONS (WEB ELEMENT CONTROLS)
+# ------------------------------------------------------------
 
-#GetBy Locators
-- Recommended locators for accessibility.
-- Types:
-    - page.getByRole(role:""): Locate by ARIA role and name.       
-    - page.getByLabel(): Locate by label text.              (supports partial text)
-    - page.getByPlaceholder(): Locate by placeholder text.  (supports partial text)
-    - page.getByText(): Locate by visible text.             (supports partial text)
-    - page.getByAltText(): Locate by alt attribute.         (supports partial text)
-    - page.getByTitle(): Locate by title attribute.         (supports partial text)
-    - page.getByTestId(): Locate by data-testid attribute.
+    Navigation:
+    - page.goto(url)             --> navigate to a URL
+    - page.goBack()              --> browser back button
+    - page.goForward()           --> browser forward button
+    - page.reload()              --> refresh the page
+
+    Page Info:
+    - page.title()               --> returns the page title
+    - page.url()                 --> returns the current URL
+
+    Input:
+    - page.fill(selector, text)  --> clears the field first, then sets the value instantly
+    - page.type(selector, text)  --> types character by character (simulates real typing)
+    - page.press(selector, key)  --> presses a specific keyboard key (e.g., 'Enter', 'Tab')
+    - page.clear(selector)       --> clears the input field
+
+    Click:
+    - page.click(selector)       --> single click on an element
+    - page.dblclick(selector)    --> double click
+    - page.click(sel, {button:'right'}) --> right-click (context menu)
+
+    Checkbox / Radio:
+    - page.check(selector)       --> check a checkbox or radio button
+    - page.uncheck(selector)     --> uncheck a checkbox
+
+    Dropdown:
+    - page.selectOption(sel, value) --> select dropdown option by visible text, value, or index
+
+    File Upload:
+    - page.setInputFiles(sel, path) --> upload one or multiple files
+
+    Hover:
+    - page.hover(selector)       --> hover over an element
+
+    State Checks:
+    - page.isVisible(selector)   --> returns true if element is visible
+    - page.isHidden(selector)    --> returns true if element is hidden
+    - page.isEnabled(selector)   --> returns true if element is enabled
+    - page.isDisabled(selector)  --> returns true if element is disabled
+
+    Screenshots:
+    - page.screenshot({path})              --> capture screenshot of the viewport
+    - page.screenshot({path, fullPage})    --> capture entire scrollable page
+    - locator.screenshot({path})           --> capture a specific element only
+
+    Element Collections:
+    - page.locator(sel).all()    --> returns array of all matched locators
+    - page.locator(sel).count()  --> returns count of matched elements
+    - page.locator(sel).nth(n)   --> returns the nth matched element (0-based)
+
+    Other:
+    - page.close()               --> close the current tab/page
+    - page.setViewportSize({w,h})--> change viewport dimensions mid-test
 
 
-#Assertions (validations)
-    -Types
-        -Auto-retrying (wait for 5 sec then timeout)
-        -Non-retrying
+# 11. XPATH SELECTORS
+# ------------------------------------------------------------
+
+    Absolute Path (avoid — fragile):
+    - Starts with single /
+    - Traverses from the root HTML node
+    - Example: /html/body/div[1]/section/div/form/button
+
+    Relative Path (preferred):
+    - Starts with //
+    - Searches anywhere in the document
+    - Syntax: //tagname[@attribute='value']
+
+    By Text Content:
+    - //button[text()='Login']             --> exact text match
+    - //button[.='Login']                  --> same as above (. = text node)
+
+    By Attribute:
+    - //input[@id='username']              --> match by id
+    - //input[@name='email']               --> match by name
+    - //div[@class='container']            --> match by class
+
+    Multiple Conditions:
+    - //*[@name='email' and @type='text']  --> AND condition
+    - //*[@class='btn' or @class='button'] --> OR condition
+
+    Partial Matching:
+    - contains(text(),'partial')           --> text contains substring
+    - contains(@attr,'partial')            --> attribute contains substring
+    - starts-with(text(),'Start')          --> text starts with substring
+    - starts-with(@id,'user')              --> attribute starts with substring
+
+    Traversal - Parent to Child:
+    - //div[@class='form']//input          --> any descendant (any depth)
+    - //div[@class='form']/input           --> direct child only
+    - //div[@class='form']/descendant::p   --> explicit descendant axis
+
+    Traversal - Child to Parent:
+    - //input[@id='email']/..              --> immediate parent (shorthand)
+    - //input[@id='email']/parent::div     --> immediate parent (explicit)
+    - //input[@id='email']/ancestor::form  --> any ancestor matching tag
+
+    Traversal - Siblings:
+    - //div/following-sibling::p           --> next sibling(s) after the element
+    - //div/preceding-sibling::p           --> previous sibling(s) before the element
+
+    Indexing (1-based):
+    - (//input[@type='text'])[1]           --> first match
+    - (//input[@type='text'])[last()]      --> last match
+
+    Namespace Handling (SVG, XML):
+    - //*[local-name()='svg']              --> ignores namespace prefix
+    - //*[name()='svg']                    --> matches full name including prefix
+
+    In Playwright: use "xpath=..." prefix inside page.locator() to use XPath.
 
 
-    #Auto Retrying 
-    -await expect(locator).toBeChecked()
-    -await expect(locator).toBeVisible()
+# 12. CSS SELECTORS
+# ------------------------------------------------------------
+    - #id                        --> by ID
+    - .class                     --> by class
+    - tagname                    --> by tag
+    - [attribute='value']        --> by attribute
+    - [class*='partial']         --> attribute contains
+    - [class^='start']           --> attribute starts with
+    - [class$='end']             --> attribute ends with
+    - parent > child             --> direct child
+    - parent child               --> any descendant
+    - el + sibling               --> adjacent (next) sibling
+    - el ~ sibling               --> general (any following) sibling
+    - :first-child               --> first child element
+    - :last-child                --> last child element
+    - :nth-child(n)              --> nth child element
+    - :visible                   --> Playwright-specific pseudo-selector
+
+
+# 13. GETBY LOCATORS (RECOMMENDED)
+# ------------------------------------------------------------
+- Accessibility-first locators — mirror how real users and screen readers find elements.
+- Preferred over CSS/XPath in Playwright tests.
+
+    - page.getByRole(role, {name})       --> locate by ARIA role (button, link, heading, textbox, checkbox, etc.)
+                                             Most recommended locator. Matches accessible name.
+
+    - page.getByLabel(text)              --> locate by associated <label> text. Supports partial match.
+
+    - page.getByPlaceholder(text)        --> locate by placeholder attribute. Supports partial match.
+
+    - page.getByText(text)               --> locate by visible text content. Partial match by default.
+                                             Use { exact: true } for exact match.
+
+    - page.getByAltText(text)            --> locate by alt attribute (typically on images). Supports partial match.
+
+    - page.getByTitle(text)              --> locate by title attribute. Supports partial match.
+
+    - page.getByTestId(id)               --> locate by data-testid attribute.
+                                             The attribute name is configurable in playwright.config.ts.
+
+    Common ARIA Roles: button, link, heading, textbox, checkbox, radio,
+                       combobox, listbox, menu, menuitem, tab, dialog, alert
+
+
+# 14. ASSERTIONS (VALIDATIONS)
+# ------------------------------------------------------------
+
+    Two Categories:
+    1. Auto-retrying  --> keeps checking until condition is met or timeout (default 5s). Use for UI state.
+    2. Non-retrying   --> checks once immediately. Use for static/computed values.
+
+    --- Auto-Retrying Assertions ---
+
+    Element State:
+    - expect(locator).toBeVisible()          --> element is visible on page
+    - expect(locator).toBeHidden()           --> element is not visible
+    - expect(locator).toBeEnabled()          --> element is enabled (not disabled)
+    - expect(locator).toBeDisabled()         --> element is disabled
+    - expect(locator).toBeChecked()          --> checkbox/radio is checked
+    - expect(locator).toBeEmpty()            --> input field is empty
+    - expect(locator).toBeFocused()          --> element has focus
+    - expect(locator).toBeEditable()         --> element is editable
+
+    Text / Value:
+    - expect(locator).toHaveText(text)       --> element has exact text (string or regex)
+    - expect(locator).toContainText(text)    --> element contains the substring
+    - expect(locator).toHaveValue(value)     --> input has specific value
+
+    Attributes / CSS:
+    - expect(locator).toHaveAttribute(name, value)  --> element has specific attribute value
+    - expect(locator).toHaveClass(class)             --> element has specific CSS class (string or regex)
+    - expect(locator).toHaveCSS(prop, value)         --> element has specific CSS property value
+    - expect(locator).toHaveId(id)                   --> element has specific id
+
+    Count:
+    - expect(locator).toHaveCount(n)         --> number of matched elements equals n
+
+    Page-Level:
+    - expect(page).toHaveTitle(title)        --> page title matches (string or regex)
+    - expect(page).toHaveURL(url)            --> page URL matches (string or regex)
+
+    Negation:
+    - Add .not before any matcher: expect(locator).not.toBeVisible()
+
+    Custom Timeout:
+    - Pass { timeout: 10000 } to any auto-retrying assertion to override the default.
+
+    --- Non-Retrying Assertions ---
+    - expect(value).toBe(expected)           --> strict equality
+    - expect(value).toEqual(expected)        --> deep equality (objects/arrays)
+    - expect(value).toBeTruthy()             --> value is truthy
+    - expect(value).toBeFalsy()              --> value is falsy
+    - expect(value).toContain(item)          --> array/string contains item
+    - expect(value).toBeGreaterThan(n)       --> value > n
+    - expect(value).toBeLessThan(n)          --> value < n
+    - expect(value).toMatch(regex)           --> string matches regex
+
+    --- Soft Assertions ---
+    - expect.soft(locator).toBeVisible()     --> does NOT stop test on failure; collects all failures at end.
+    - Useful for validating multiple things in one test without early termination.
+
+
+# 15. WAITS
+# ------------------------------------------------------------
+
+    1. Auto-wait (default):
+       - Playwright automatically waits before every action (click, fill, etc.).
+       - Waits for: visible, stable, enabled, and able to receive events.
+       - Default timeout: 30 seconds.
+
+    2. Explicit Waits (wait for specific conditions):
+       - page.waitForSelector(sel)                  --> wait for element to appear in DOM
+       - page.waitForSelector(sel, {state:'hidden'}) --> wait for element to disappear
+       - page.waitForLoadState('networkidle')        --> wait until no network requests for 500ms
+       - page.waitForLoadState('domcontentloaded')   --> wait for DOM to be fully parsed
+       - page.waitForURL(pattern)                    --> wait for navigation to a matching URL
+       - page.waitForResponse(pattern)               --> wait for a specific API response
+       - page.waitForRequest(pattern)                --> wait for a specific API request
+       - page.waitForEvent(event)                    --> wait for a browser event (e.g., 'download')
+       - page.waitForFunction(fn)                    --> wait until a custom JS condition returns true
+       - locator.waitFor()                           --> wait for locator to be visible
+       - locator.waitFor({state:'attached'})         --> wait for locator to be in DOM (even if hidden)
+
+    3. Hardcoded Wait (avoid — slows tests):
+       - page.waitForTimeout(ms)                     --> pauses for fixed time; use only as last resort
+
+
+# 16. HOOKS (SETUP & TEARDOWN)
+# ------------------------------------------------------------
+    - test.beforeAll()    --> runs once before all tests in the file
+    - test.beforeEach()   --> runs before each individual test
+    - test.afterEach()    --> runs after each individual test
+    - test.afterAll()     --> runs once after all tests in the file
+
+    Use cases: navigating to a base URL, logging in, cleaning up test data, closing connections.
+
+
+# 17. CONFIGURATION (playwright.config.ts) - KEY OPTIONS
+# ------------------------------------------------------------
+    - testDir            --> directory containing test files
+    - timeout            --> per-test timeout (default 30000ms)
+    - retries            --> number of times to retry failed tests
+    - workers            --> number of parallel workers
+    - reporter           --> output format (html, json, junit, list, dot)
+    - use.baseURL        --> base URL prepended to page.goto() calls
+    - use.headless       --> true (default) or false for headed mode
+    - use.viewport       --> default viewport size { width, height }
+    - use.screenshot     --> 'on', 'off', or 'only-on-failure'
+    - use.video          --> 'on', 'off', or 'retain-on-failure'
+    - use.trace          --> 'on', 'off', 'on-first-retry', or 'retain-on-failure'
+    - projects           --> array of browser configurations to run tests against
