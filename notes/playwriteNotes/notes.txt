@@ -385,3 +385,19 @@
     - use.video          --> 'on', 'off', or 'retain-on-failure'
     - use.trace          --> 'on', 'off', 'on-first-retry', or 'retain-on-failure'
     - projects           --> array of browser configurations to run tests against
+
+
+
+-Handelling Navigation from one tab to another
+    -for this we use browser fixtures
+    and for handelling the navigation we use promis.all() with waitForEvent("popup") event 
+    -for example 
+    let [page2] = await Promise.all([
+    page.waitForEvent("popup"),
+    page
+      .locator(
+        '//div[@class="bg-white shadow-md rounded-lg overflow-hidden"]//button',
+      )
+      .first()
+      .click(),
+  ]);
