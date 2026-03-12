@@ -401,3 +401,38 @@
       .first()
       .click(),
   ]);
+
+
+
+  -dropdowns
+    -types
+        -standard dropdown
+        -multi_select Dropdown
+        -custom dropdown
+        -auto suggestion dropdown
+    -handelling
+        (there is a method called page.locator().selectOption()) 
+
+  -frames   (3rd party html)
+    -types
+        -iframe
+        -frames
+    -handelling
+        -page.frame()
+        -page.frameLocator()
+        -contentFrame()
+    
+
+  -popups
+    -types
+        -alert
+        -dialog
+        -newpage
+        -download
+        -popup
+
+    -handelling
+        -page.on('event',callback fn)
+        -page.once('event',callback fn)
+    
+    
