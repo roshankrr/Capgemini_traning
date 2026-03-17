@@ -10,4 +10,10 @@ export default class Example {
     this.passwordTF = page.locator("input[name='password']");
     this.submitBtn = page.locator("#submit");
   }
+
+  async Login(username: string, pass: string) {
+    await this.unameTF.fill(username);
+    await this.passwordTF.fill(pass);
+    await this.submitBtn.click();
+  }
 }
