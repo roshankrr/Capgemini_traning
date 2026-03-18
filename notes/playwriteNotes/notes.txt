@@ -436,3 +436,10 @@
         -page.once('event',callback fn)
     
     
+-config files
+
+-hooks
+    -beforeEach (based on testcase)
+    -beforeAll  (based on workers)
+    -afterEach  (based on testacase)
+    -afterAll   (based on workers)

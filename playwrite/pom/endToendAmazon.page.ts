@@ -6,6 +6,7 @@ export class endToEnd_amazon {
   forthprod: Locator;
   quantityDD: Locator;
   addtoCartBTN: Locator;
+  reviewImg: Locator;
 
   constructor(page: Page) {
     this.searchbarTF = page.locator("input#twotabsearchtextbox");
@@ -17,6 +18,13 @@ export class endToEnd_amazon {
     );
     this.quantityDD = page.locator('//select[@name="quantity"]');
     this.addtoCartBTN = page.locator('//input[@id="add-to-cart-button"]');
+    this.reviewImg = page.locator('//div[@id="customerReviews"]//picture//img');
+  }
+
+  async reviewImages(page2: Page) {
+    return (this.reviewImg = page2.locator(
+      '//div[@id="customerReviews"]//picture//img',
+    ));
   }
 
   async selectQuantity(value: string = "3", page2: Page) {

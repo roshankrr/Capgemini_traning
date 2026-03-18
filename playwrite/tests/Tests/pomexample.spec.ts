@@ -1,8 +1,8 @@
 import { test } from "@playwright/test";
-import example from "../pom/example.page";
+import example from "../../pom/example.page";
 import path from "node:path";
 import fs from "fs";
-import endToendAmazon from "../pom/endToendAmazon.page";
+import { endToEnd_amazon } from "../../pom/endToendAmazon.page";
 
 let mypat = (pat: string) => {
   return path.join(__dirname, pat);
@@ -32,7 +32,7 @@ test.only("amazon-search", async ({ page }) => {
   let data = fs.readFileSync(mypat("../public/endToEnd_amazon.json"), "utf-8");
   let dat = JSON.parse(data);
   await page.goto(dat.url);
-  let amz = new endToendAmazon(page);
+  let amz = new endToEnd_amazon(page);
   await amz.searchbarTF.fill(dat.search);
   await page.keyboard.press("Enter");
   await amz.ramCheckBox.click();
