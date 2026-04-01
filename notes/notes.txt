@@ -3,3 +3,24 @@ these is no method overloading
 JIT--invented in 1960 but incorporate with js in 
 
 //by default the properties are public 
+
+
+
+
+
+#asynchronous js
+
+synchronous Vs asynchronous
+
+type of asynchronous
+    -timer fn
+    -promises
+    -async await 
+
+timer example
+promise example
+collaboration +priority (micro vs macro task stack)
+Side Stack vs main stack + Event Loop +browser execution context 
+promise methods 
+async await 
+

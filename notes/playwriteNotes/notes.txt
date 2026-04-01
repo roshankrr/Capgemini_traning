@@ -11,6 +11,7 @@
 - Cross-browser: Chromium (Chrome, Edge), Firefox, WebKit (Safari).
 - Cross-platform: Windows, macOS, Linux.
 - Can emulate mobile devices (viewport, user-agent, geolocation).
+-It uses Socket.io to execute the testcases in different browsers thats y its faster then other tools
 
 
 # 2. KEY FEATURES
