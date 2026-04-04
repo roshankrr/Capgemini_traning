@@ -6,7 +6,7 @@ let baseUrl: string = restFullBookersDataJson.base_url;
 let token: string;
 let bookingid: number;
 test("Auth Token", async ({ request }) => {
-  let response = await request.post(`${baseUrl}/auth`, {
+  let r1 = await request.post(`${baseUrl}/auth`, {
     data: {
       username: restFullBookersDataJson.username,
       password: restFullBookersDataJson.password,
@@ -15,32 +15,30 @@ test("Auth Token", async ({ request }) => {
       "content-type": "application/json",
     },
   });
-  let resJson = await response.json();
-  console.log(resJson);
-  token = resJson.token;
+  let response = await r1.json();
+  console.log(response);
+  token = response.token;
   console.log(token);
 });
 
 //get all booking ids
 test("get all booking ids", async ({ request }) => {
-  let response = await request.get(`${baseUrl}/booking`, {});
-  let resJson = await response.json();
-  console.log(resJson);
+  let r1 = await request.get(`${baseUrl}/booking`, {});
+  let response = await r1.json();
+  console.log(response);
 });
 
 //get booking by id
 test("get booking by id", async ({ request }) => {
-  let response = await request.get(
+  let r1 = await request.get(
     `${baseUrl}/booking/${restFullBookersDataJson.id}`,
   );
-  let resJson = await response.json();
-  console.log(resJson);
-  console.log(bookingid);
-  console.log(bookingid);
+  let response = await r1.json();
+  console.log(response);
 });
 
 test("post booking", async ({ request }) => {
-  let response = await request.post(`${baseUrl}/booking`, {
+  let r1 = await request.post(`${baseUrl}/booking`, {
     data: {
       firstname: restFullBookersDataJson.firstname,
       lastname: restFullBookersDataJson.lastname,
@@ -53,13 +51,13 @@ test("post booking", async ({ request }) => {
       additionalneeds: restFullBookersDataJson.additionalneeds,
     },
   });
-  let resJson = await response.json();
-  console.log(resJson);
-  bookingid = resJson.bookingid;
+  let response = await r1.json();
+  console.log(response);
+  bookingid = response.bookingid;
 });
 
 test("update booking", async ({ request }) => {
-  let response = await request.put(`${baseUrl}/booking/${bookingid}`, {
+  let r1 = await request.put(`${baseUrl}/booking/${bookingid}`, {
     data: {
       firstname: restFullBookersDataJson.updateDetails.firstname,
       lastname: restFullBookersDataJson.updateDetails.lastname,
@@ -76,6 +74,34 @@ test("update booking", async ({ request }) => {
       cookie: `token=${token}`,
     },
   });
-  let resJson = await response.json();
-  console.log(resJson);
+  let response = await r1.json();
+  console.log(response);
+});
+
+test(" partial update data", async ({ request }) => {
+  let r1 = await request.patch(`${baseUrl}/booking/${bookingid}`, {
+    data: {
+      firstname: restFullBookersDataJson.partial_updated_firstName,
+      lastname: restFullBookersDataJson.partial_updated_lastName,
+    },
+    headers: {
+      "content-type": "application/json",
+      cookie: `token=${token}`,
+    },
+  });
+  let response = await r1.json();
+  console.log(response);
+});
+
+test("delete the booking", async ({ request }) => {
+  let r1 = await request.delete(`${baseUrl}/booking/${bookingid}`, {
+    headers: {
+      "content-type": "application/json",
+      // Authorization: `Basic ${token}`,
+      cookie: `token=${token}`,
+    },
+  });
+
+  let resText = await r1.text();
+  console.log("Status:", r1.status(), "Body:", resText);
 });
